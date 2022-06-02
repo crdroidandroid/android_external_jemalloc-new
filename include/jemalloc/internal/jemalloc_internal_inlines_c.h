@@ -42,6 +42,8 @@ JEMALLOC_ALWAYS_INLINE void *
 iallocztm(tsdn_t *tsdn, size_t size, szind_t ind, bool zero, tcache_t *tcache,
     bool is_internal, arena_t *arena, bool slow_path) {
 	void *ret;
+	/* Always force returning zeroed data. */
+	zero = true;
 
 	assert(!is_internal || tcache == NULL);
 	assert(!is_internal || arena == NULL || arena_is_auto(arena));
@@ -67,6 +69,9 @@ JEMALLOC_ALWAYS_INLINE void *
 ipallocztm(tsdn_t *tsdn, size_t usize, size_t alignment, bool zero,
     tcache_t *tcache, bool is_internal, arena_t *arena) {
 	void *ret;
+
+	/* Always force returning zeroed data. */
+	zero = true;
 
 	assert(usize != 0);
 	assert(usize == sz_sa2u(usize, alignment));
@@ -135,6 +140,10 @@ JEMALLOC_ALWAYS_INLINE void *
 iralloct_realign(tsdn_t *tsdn, void *ptr, size_t oldsize, size_t size,
     size_t alignment, bool zero, tcache_t *tcache, arena_t *arena,
     hook_ralloc_args_t *hook_args) {
+
+	/* Always force returning zeroed data. */
+	zero = true;
+
 	witness_assert_depth_to_rank(tsdn_witness_tsdp_get(tsdn),
 	    WITNESS_RANK_CORE, 0);
 	void *p;
@@ -176,6 +185,8 @@ iralloct(tsdn_t *tsdn, void *ptr, size_t oldsize, size_t size, size_t alignment,
 {
 	assert(ptr != NULL);
 	assert(size != 0);
+	/* Always force returning zeroed data. */
+	zero = true;
 	witness_assert_depth_to_rank(tsdn_witness_tsdp_get(tsdn),
 	    WITNESS_RANK_CORE, 0);
 
@@ -205,6 +216,8 @@ ixalloc(tsdn_t *tsdn, void *ptr, size_t oldsize, size_t size, size_t extra,
     size_t alignment, bool zero, size_t *newsize) {
 	assert(ptr != NULL);
 	assert(size != 0);
+	/* Always force returning zeroed data. */
+	zero = true;
 	witness_assert_depth_to_rank(tsdn_witness_tsdp_get(tsdn),
 	    WITNESS_RANK_CORE, 0);
 
