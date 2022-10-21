@@ -65,6 +65,7 @@ typedef void (*test_callback_t)(int *);
     O(tcache_enabled,		bool,			bool)		\
     O(arenas_tdata_bypass,	bool,			bool)		\
     O(reentrancy_level,		int8_t,			int8_t)		\
+    O(min_init_state_nfetched,		uint8_t,	uint8_t)	\
     O(narenas_tdata,		uint32_t,		uint32_t)	\
     O(offset_state,		uint64_t,		uint64_t)	\
     O(thread_allocated,		uint64_t,		uint64_t)	\
@@ -84,6 +85,7 @@ typedef void (*test_callback_t)(int *);
     ATOMIC_INIT(tsd_state_uninitialized),				\
     TCACHE_ENABLED_ZERO_INITIALIZER,					\
     false,								\
+    0,									\
     0,									\
     0,									\
     0,									\
@@ -121,6 +123,8 @@ void tsd_postfork_child(tsd_t *tsd);
 void tsd_global_slow_inc(tsdn_t *tsdn);
 void tsd_global_slow_dec(tsdn_t *tsdn);
 bool tsd_global_slow();
+
+#define TSD_MIN_INIT_STATE_MAX_FETCHED (128)
 
 enum {
 	/* Common case --> jnz. */
