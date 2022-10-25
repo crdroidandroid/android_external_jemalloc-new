@@ -1033,7 +1033,6 @@ obtain_malloc_conf(unsigned which_source, char buf[PATH_MAX + 1]) {
 	return ret;
 }
 
-#if 0
 static void
 malloc_conf_init_helper(sc_data_t *sc_data, unsigned bin_shard_sizes[SC_NBINS],
     bool initial_call, const char *opts_cache[MALLOC_CONF_NSOURCES],
@@ -1188,6 +1187,23 @@ malloc_conf_init_helper(sc_data_t *sc_data, unsigned bin_shard_sizes[SC_NBINS],
 
 			CONF_HANDLE_BOOL(opt_abort, "abort")
 			CONF_HANDLE_BOOL(opt_abort_conf, "abort_conf")
+			if (strncmp("metadata_thp", k, klen) == 0) {
+				int i;
+				bool match = false;
+				for (i = 0; i < metadata_thp_mode_limit; i++) {
+					if (strncmp(metadata_thp_mode_names[i],
+					    v, vlen) == 0) {
+						opt_metadata_thp = i;
+						match = true;
+						break;
+					}
+				}
+				if (!match) {
+					CONF_ERROR("Invalid conf value",
+					    k, klen, v, vlen);
+				}
+				CONF_CONTINUE;
+			}
 			CONF_HANDLE_BOOL(opt_retain, "retain")
 			if (strncmp("dss", k, klen) == 0) {
 				int i;
@@ -1387,6 +1403,27 @@ malloc_conf_init_helper(sc_data_t *sc_data, unsigned bin_shard_sizes[SC_NBINS],
 					CONF_CONTINUE;
 				}
 			}
+			if (CONF_MATCH("thp")) {
+				bool match = false;
+				for (int i = 0; i < thp_mode_names_limit; i++) {
+					if (strncmp(thp_mode_names[i],v, vlen)
+					    == 0) {
+						if (!have_madvise_huge) {
+							CONF_ERROR(
+							    "No THP support",
+							    k, klen, v, vlen);
+						}
+						opt_thp = i;
+						match = true;
+						break;
+					}
+				}
+				if (!match) {
+					CONF_ERROR("Invalid conf value",
+					    k, klen, v, vlen);
+				}
+				CONF_CONTINUE;
+			}
 			CONF_ERROR("Invalid conf pair", k, klen, v, vlen);
 #undef CONF_ERROR
 #undef CONF_CONTINUE
@@ -1422,7 +1459,7 @@ malloc_conf_init(sc_data_t *sc_data, unsigned bin_shard_sizes[SC_NBINS]) {
 	malloc_conf_init_helper(sc_data, bin_shard_sizes, false, opts_cache,
 	    NULL);
 }
-#endif
+
 #undef MALLOC_CONF_NSOURCES
 
 static bool
@@ -1478,7 +1515,7 @@ malloc_init_hard_a0_locked() {
 	if (config_prof) {
 		prof_boot0();
 	}
-	// malloc_conf_init(&sc_data, bin_shard_sizes);
+	malloc_conf_init(&sc_data, bin_shard_sizes);
 	sz_boot(&sc_data);
 	bin_boot(&sc_data, bin_shard_sizes);
 
