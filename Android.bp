@@ -468,8 +468,6 @@ cc_test {
 
     static_libs: ["libjemalloc5_unittest"],
 
-    test_per_src: true,
-
     target: {
         linux_bionic: {
             enabled: true,
@@ -544,8 +542,6 @@ cc_test {
 
     static_libs: ["libjemalloc5_integrationtest"],
 
-    test_per_src: true,
-
     target: {
         linux_glibc: {
             // The sanitizer does not work for these tests on the host.
@@ -610,8 +606,6 @@ cc_test {
         "libjemalloc5_stresstestlib",
         "libjemalloc5_jet",
     ],
-
-    test_per_src: true,
 
     target: {
         linux_glibc: {
