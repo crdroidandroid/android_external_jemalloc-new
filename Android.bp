@@ -101,30 +101,30 @@ common_c_local_includes = [
 //     1 << XX is the maximum sized allocation that will be in the tcache.
 
 android_common_cflags = [
-    // Default parameters for jemalloc config.
-    "-DANDROID_ENABLE_TCACHE",
-    "-DANDROID_LG_TCACHE_MAXCLASS_DEFAULT=16",
-    "-DANDROID_NUM_ARENAS=2",
-    "-DANDROID_TCACHE_NSLOTS_SMALL_MAX=8",
-    "-DANDROID_TCACHE_NSLOTS_LARGE=16",
+    // Default some parameters to small values to minimize PSS.
+    // These parameters will be overridden by android_product_variables
+    // for non-svelte configs.
+    "-DANDROID_NUM_ARENAS=1",
+    // This value cannot go below 2.
+    "-DANDROID_TCACHE_NSLOTS_SMALL_MAX=2",
+    "-DANDROID_TCACHE_NSLOTS_LARGE=1",
 ]
 
 android_product_variables = {
+    // Only enable the tcache on non-svelte configurations, to save PSS.
     malloc_low_memory: {
-        // Parameters to minimize RSS.
         cflags: [
-            // Disable the tcache on non-svelte configurations, to save PSS.
-            "-UANDROID_ENABLE_TCACHE",
+            "-DANDROID_ENABLE_TCACHE",
+            "-DANDROID_LG_TCACHE_MAXCLASS_DEFAULT=16",
 
             "-UANDROID_NUM_ARENAS",
-            "-DANDROID_NUM_ARENAS=1",
+            "-DANDROID_NUM_ARENAS=2",
 
-            // This value cannot go below 2.
             "-UANDROID_TCACHE_NSLOTS_SMALL_MAX",
-            "-DANDROID_TCACHE_NSLOTS_SMALL_MAX=2",
+            "-DANDROID_TCACHE_NSLOTS_SMALL_MAX=8",
 
             "-UANDROID_TCACHE_NSLOTS_LARGE",
-            "-DANDROID_TCACHE_NSLOTS_LARGE=1",
+            "-DANDROID_TCACHE_NSLOTS_LARGE=16",
         ],
     },
 }
