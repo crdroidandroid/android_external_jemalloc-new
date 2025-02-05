@@ -2453,6 +2453,17 @@ case "${host_cpu}" in
   fi
   ;;
 esac
+
+  dnl Check for process_madvise
+  JE_COMPILABLE([process_madvise(2)], [
+#include <sys/mman.h>
+#include <sys/syscall.h>
+], [
+	syscall(SYS_process_madvise, 0, (void *)0, 0, 0, 0);
+], [je_cv_process_madvise])
+  if test "x${je_cv_process_madvise}" = "xyes" ; then
+    AC_DEFINE([JEMALLOC_HAVE_PROCESS_MADVISE], [ ], [ ])
+  fi
 else
   dnl Check for posix_madvise.
   JE_COMPILABLE([posix_madvise], [

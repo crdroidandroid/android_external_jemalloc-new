@@ -163,6 +163,7 @@ CTL_PROTO(opt_prof_sys_thread_name)
 CTL_PROTO(opt_prof_time_res)
 CTL_PROTO(opt_lg_san_uaf_align)
 CTL_PROTO(opt_zero_realloc)
+CTL_PROTO(opt_process_madvise_max_batch)
 CTL_PROTO(tcache_create)
 CTL_PROTO(tcache_flush)
 CTL_PROTO(tcache_destroy)
@@ -515,7 +516,8 @@ static const ctl_named_node_t opt_node[] = {
 	{NAME("lg_san_uaf_align"),	CTL(opt_lg_san_uaf_align)},
 	{NAME("zero_realloc"),	CTL(opt_zero_realloc)},
 	{NAME("debug_double_free_max_scan"),
-		CTL(opt_debug_double_free_max_scan)}
+		CTL(opt_debug_double_free_max_scan)},
+	{NAME("process_madvise_max_batch"), CTL(opt_process_madvise_max_batch)}
 };
 
 static const ctl_named_node_t	tcache_node[] = {
@@ -2237,6 +2239,8 @@ CTL_RO_NL_GEN(opt_lg_tcache_flush_small_div, opt_lg_tcache_flush_small_div,
 CTL_RO_NL_GEN(opt_lg_tcache_flush_large_div, opt_lg_tcache_flush_large_div,
     unsigned)
 CTL_RO_NL_GEN(opt_lg_extent_max_active_fit, opt_lg_extent_max_active_fit,
+    size_t)
+CTL_RO_NL_GEN(opt_process_madvise_max_batch, opt_process_madvise_max_batch,
     size_t)
 CTL_RO_NL_CGEN(config_prof, opt_prof, opt_prof, bool)
 CTL_RO_NL_CGEN(config_prof, opt_prof_prefix, opt_prof_prefix, const char *)
