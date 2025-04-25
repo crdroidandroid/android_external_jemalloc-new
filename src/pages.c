@@ -560,7 +560,7 @@ init_process_madvise(void) {
 		opt_process_madvise_max_batch = PROCESS_MADVISE_MAX_BATCH_LIMIT;
 	}
 	pid_t pid = getpid();
-	pidfd = syscall(SYS_pidfd_open, pid, 0);
+	pidfd = (int)syscall(SYS_pidfd_open, pid, 0);
 	if (pidfd == -1) {
 		return true;
 	}
