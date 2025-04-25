@@ -66,6 +66,9 @@ common_cflags = [
     "-fno-emulated-tls",
     "-ftls-model=initial-exec",
 
+    // All devices have MADVISE support
+    "-DJEMALLOC_HAVE_PROCESS_MADVISE",
+
     // The following flags are for avoiding errors when compiling.
     "-Wno-unused-parameter",
     "-Wno-unused-function",
