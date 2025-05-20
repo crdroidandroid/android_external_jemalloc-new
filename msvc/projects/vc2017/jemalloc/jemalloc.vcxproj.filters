@@ -112,9 +112,6 @@
     <ClCompile Include="..\..\..\..\src\pages.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\peak_demand.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\src\peak_event.c">
       <Filter>Source Files</Filter>
     </ClCompile>

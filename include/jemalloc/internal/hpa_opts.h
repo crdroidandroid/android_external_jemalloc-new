@@ -27,8 +27,7 @@ struct hpa_shard_opts_s {
 
 	/*
 	 * The HPA purges whenever the number of pages exceeds dirty_mult *
-	 * peak_active_pages.  This may be set to (fxp_t)-1 to disable
-	 * purging.
+	 * active_pages.  This may be set to (fxp_t)-1 to disable purging.
 	 */
 	fxp_t dirty_mult;
 
@@ -63,13 +62,6 @@ struct hpa_shard_opts_s {
 	 * Maximum number of hugepages to purge on each purging attempt.
 	 */
 	ssize_t experimental_max_purge_nhp;
-
-	/*
-	 * Sliding window duration to track active memory demand statistics.
-	 * This might be set to 0, to disable sliding window statistics
-	 * tracking and use current number of active pages for purging instead.
-	 */
-	uint64_t peak_demand_window_ms;
 };
 
 #define HPA_SHARD_OPTS_DEFAULT {					\
@@ -94,9 +86,7 @@ struct hpa_shard_opts_s {
 	/* experimental_strict_min_purge_interval */			\
 	false,								\
 	/* experimental_max_purge_nhp */				\
-	-1,								\
-	/* peak_demand_window_ms */					\
-	0								\
+	-1								\
 }
 
 #endif /* JEMALLOC_INTERNAL_HPA_OPTS_H */
