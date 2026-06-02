@@ -118,13 +118,13 @@ android_product_variables = {
             "-DANDROID_LG_TCACHE_MAXCLASS_DEFAULT=16",
 
             "-UANDROID_NUM_ARENAS",
-            "-DANDROID_NUM_ARENAS=2",
+            "-DANDROID_NUM_ARENAS=4",
 
             "-UANDROID_TCACHE_NSLOTS_SMALL_MAX",
-            "-DANDROID_TCACHE_NSLOTS_SMALL_MAX=8",
+            "-DANDROID_TCACHE_NSLOTS_SMALL_MAX=16",
 
             "-UANDROID_TCACHE_NSLOTS_LARGE",
-            "-DANDROID_TCACHE_NSLOTS_LARGE=16",
+            "-DANDROID_TCACHE_NSLOTS_LARGE=20",
         ],
     },
 }
